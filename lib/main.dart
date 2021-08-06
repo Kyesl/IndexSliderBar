@@ -97,7 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
             itemColor: Colors.black,
             itemSelectedColor: Colors.white,
             itemSelectedBgColor: Colors.green,
-            tapedBgColor: Colors.grey[200]?? Colors.grey,),
+            tapedBgColor: Colors.grey[200]?? Colors.grey,
+            showBubble: true,
+            bubbleBgColor: Colors.blue,
+            bubbleItemColor: Colors.white,),
           ],
         )
       ),
