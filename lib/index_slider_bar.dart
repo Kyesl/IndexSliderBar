@@ -5,7 +5,18 @@ class IndexSliderBar extends StatefulWidget {
   final List<String> dataList;
   final Function onSelectChange;
 
-  IndexSliderBar(this.dataList, this.onSelectChange);
+  final Color bgColor;
+  final Color tapedBgColor;
+  final Color itemColor;
+  final Color itemSelectedColor;
+  final Color itemSelectedBgColor;
+
+  IndexSliderBar(this.dataList, this.onSelectChange,
+      {this.bgColor = Colors.transparent,
+        this.tapedBgColor = Colors.transparent,
+        this.itemColor = Colors.black,
+        this.itemSelectedColor = Colors.black,
+        this.itemSelectedBgColor = Colors.transparent});
 
   @override
   State<StatefulWidget> createState() => _IndexSliderBarState();
@@ -18,13 +29,11 @@ class _IndexSliderBarState extends State<IndexSliderBar> {
 
   bool _isTap = false;
 
-  String lastSelectData = "";
+  String _lastSelectData = "";
 
   @override
   void initState() {
     _dataList = widget.dataList;
-    _widgetList =
-        _dataList.map((e) => Text(e, style: TextStyle(fontSize: 14),)).toList();
     super.initState();
   }
 
@@ -48,18 +57,28 @@ class _IndexSliderBarState extends State<IndexSliderBar> {
       onVerticalDragEnd: (DragEndDetails end) {
         setState(() {
           _isTap = false;
+          _lastSelectData = "";
         });
       },
       child: Container(
-        width: 25,
         padding: EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(12)),
-          color: _isTap ? Colors.grey[200] : Colors.transparent,
+          color: _isTap ? widget.tapedBgColor : widget.bgColor,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: _widgetList,
+          children: _dataList.map((e) =>
+              Container(
+                alignment: Alignment.center,
+                width: 25,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: _lastSelectData == e ? widget.itemSelectedBgColor : Colors.transparent
+                  ),
+                  child: Text(e, style: TextStyle(fontSize: 14, color: _lastSelectData == e ? widget.itemSelectedColor : widget.itemColor),)
+              )
+          ).toList(),
         ),
       ),
     );
@@ -73,10 +92,12 @@ class _IndexSliderBarState extends State<IndexSliderBar> {
         .dy;
 
     String selectData = _getSelectedData(dy);
-    if (lastSelectData == selectData) {
+    if (_lastSelectData == selectData) {
       return;
     }
-    lastSelectData = selectData;
+    setState(() {
+      _lastSelectData = selectData;
+    });
 
     widget.onSelectChange(selectData);
   }

@@ -93,8 +93,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 setState(() {
                   _selectItem = selectItem;
                 });
-            }
-            ),
+            },
+            itemColor: Colors.black,
+            itemSelectedColor: Colors.white,
+            itemSelectedBgColor: Colors.green,
+            tapedBgColor: Colors.grey[200]?? Colors.grey,),
           ],
         )
       ),
